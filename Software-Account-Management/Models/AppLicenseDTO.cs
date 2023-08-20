@@ -1,8 +1,7 @@
 ﻿namespace Software_Account_Management.Models
 {
-    public class AppLicense
-    {
-        public Guid Id { get; set; }
+    public class AppLicenseDTO
+    { 
         public required string AppName { get; set; }
         public required string AppService { get; set; }
         public int SpaceId { get; set; }
@@ -10,9 +9,7 @@
         public required string UserName { get; set; }
         public required string Password { get; set; }
         public DateTime LastModified { get; set; }
-        public bool LicenseStatus { get; set; }
-        //maybe we have to remove set.
-        public virtual ICollection<LicenseQueue> Queue { get; set; } = new List<LicenseQueue>();
+        public bool LicenseStatus { get; set; } = true;
 
     }
 }

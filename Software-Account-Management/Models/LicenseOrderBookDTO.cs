@@ -1,6 +1,6 @@
 ﻿namespace Software_Account_Management.Models
 {
-    public class LicenseOrderBook
+    public class LicenseOrderBookDTO
     {
         public enum STATUS
         {
@@ -8,12 +8,9 @@
             QUEUED,
             RESERVED,
             COMPLETED,
-            CANCELLED,
-            ERROR
+            CANCELLED
         }
-        public int Id { get; set; }
-        public Guid? AppLicenseId { get; set; }
-        public AppLicense? AppLicense { get; set; }
+        public AppLicense? App_license { get; set; }
         public required string TestStation { get; set; }
         public DateTime OrderTime { get; set; }
         public DateTime ReservationTime { get; set; }
