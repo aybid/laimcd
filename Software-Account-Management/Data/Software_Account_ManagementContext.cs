@@ -16,7 +16,6 @@ namespace Software_Account_Management.Data
 
         public DbSet<AppLicense> AppLicenses { get; set; } = default!;
         public DbSet<LicenseOrderBook> LicenseOrderBooks { get; set; } = default!;
-        public DbSet<LicenseQueue> licenseQueues { get; set; } = default!;
 
     }
 }

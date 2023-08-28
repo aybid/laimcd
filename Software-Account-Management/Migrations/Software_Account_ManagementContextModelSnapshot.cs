@@ -36,6 +36,9 @@ namespace Software_Account_Management.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("LicenseOrderBookId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("LicenseStatus")
                         .HasColumnType("tinyint(1)");
 
@@ -56,58 +59,12 @@ namespace Software_Account_Management.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppLicenses", (string)null);
+                    b.HasIndex("LicenseOrderBookId");
+
+                    b.ToTable("AppLicenses");
                 });
 
             modelBuilder.Entity("Software_Account_Management.Models.LicenseOrderBook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("AppLicenseId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CompletionTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("InstanceId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OrderTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("ReservationTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ReservedByUser")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ReservedForSut")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TestStation")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TestStationTaskId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppLicenseId");
-
-                    b.ToTable("LicenseOrderBooks", (string)null);
-                });
-
-            modelBuilder.Entity("Software_Account_Management.Models.LicenseQueue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,49 +73,60 @@ namespace Software_Account_Management.Migrations
                     b.Property<Guid>("AppLicenseId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("CompletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("EstCompletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Framework")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Orchestrator")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ReservationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ReservedByUser")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TestCaseID")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TestStationName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppLicenseId");
 
-                    b.HasIndex("ReservationId");
+                    b.ToTable("LicenseOrderBooks");
+                });
 
-                    b.ToTable("licenseQueues", (string)null);
+            modelBuilder.Entity("Software_Account_Management.Models.AppLicense", b =>
+                {
+                    b.HasOne("Software_Account_Management.Models.LicenseOrderBook", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("LicenseOrderBookId");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Software_Account_Management.Models.LicenseOrderBook", b =>
                 {
                     b.HasOne("Software_Account_Management.Models.AppLicense", "AppLicense")
                         .WithMany()
-                        .HasForeignKey("AppLicenseId");
-
-                    b.Navigation("AppLicense");
-                });
-
-            modelBuilder.Entity("Software_Account_Management.Models.LicenseQueue", b =>
-                {
-                    b.HasOne("Software_Account_Management.Models.AppLicense", "AppLicense")
-                        .WithMany("Queue")
                         .HasForeignKey("AppLicenseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Software_Account_Management.Models.LicenseOrderBook", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("AppLicense");
-
-                    b.Navigation("Reservation");
-                });
-
-            modelBuilder.Entity("Software_Account_Management.Models.AppLicense", b =>
-                {
-                    b.Navigation("Queue");
                 });
 #pragma warning restore 612, 618
         }

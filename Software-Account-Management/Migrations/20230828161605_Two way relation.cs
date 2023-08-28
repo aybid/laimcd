@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Software_Account_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class FixedmanytooneOrderBook : Migration
+    public partial class Twowayrelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace Software_Account_Management.Migrations
                     AppService = table.Column<string>(type: "longtext", nullable: false),
                     SpaceId = table.Column<int>(type: "int", nullable: false),
                     TestStationPool = table.Column<string>(type: "longtext", nullable: false),
+                    LicenseOrderBookId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "longtext", nullable: false),
                     Password = table.Column<string>(type: "longtext", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -41,16 +42,15 @@ namespace Software_Account_Management.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    AppLicenseId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    TestStation = table.Column<string>(type: "longtext", nullable: false),
-                    OrderTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TestStationName = table.Column<string>(type: "longtext", nullable: false),
+                    TestCaseID = table.Column<string>(type: "longtext", nullable: false),
+                    Orchestrator = table.Column<string>(type: "longtext", nullable: false),
+                    AppLicenseId = table.Column<Guid>(type: "char(36)", nullable: false),
                     ReservationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CompletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    EstCompletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CompletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ReservedByUser = table.Column<string>(type: "longtext", nullable: false),
-                    ReservedForSut = table.Column<string>(type: "longtext", nullable: false),
-                    InstanceId = table.Column<string>(type: "longtext", nullable: false),
-                    TestStationTaskId = table.Column<string>(type: "longtext", nullable: false)
+                    Framework = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,58 +59,35 @@ namespace Software_Account_Management.Migrations
                         name: "FK_LicenseOrderBooks_AppLicenses_AppLicenseId",
                         column: x => x.AppLicenseId,
                         principalTable: "AppLicenses",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "licenseQueues",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    AppLicenseId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    ReservationId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_licenseQueues", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_licenseQueues_AppLicenses_AppLicenseId",
-                        column: x => x.AppLicenseId,
-                        principalTable: "AppLicenses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_licenseQueues_LicenseOrderBooks_ReservationId",
-                        column: x => x.ReservationId,
-                        principalTable: "LicenseOrderBooks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+            migrationBuilder.CreateIndex(
+                name: "IX_AppLicenses_LicenseOrderBookId",
+                table: "AppLicenses",
+                column: "LicenseOrderBookId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LicenseOrderBooks_AppLicenseId",
                 table: "LicenseOrderBooks",
                 column: "AppLicenseId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_licenseQueues_AppLicenseId",
-                table: "licenseQueues",
-                column: "AppLicenseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_licenseQueues_ReservationId",
-                table: "licenseQueues",
-                column: "ReservationId");
+            migrationBuilder.AddForeignKey(
+                name: "FK_AppLicenses_LicenseOrderBooks_LicenseOrderBookId",
+                table: "AppLicenses",
+                column: "LicenseOrderBookId",
+                principalTable: "LicenseOrderBooks",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "licenseQueues");
+            migrationBuilder.DropForeignKey(
+                name: "FK_AppLicenses_LicenseOrderBooks_LicenseOrderBookId",
+                table: "AppLicenses");
 
             migrationBuilder.DropTable(
                 name: "LicenseOrderBooks");
