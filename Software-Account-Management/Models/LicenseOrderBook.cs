@@ -1,22 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System;
+using System.Collections.Generic;
 
-namespace Software_Account_Management.Models
-{ 
-    public class LicenseOrderBook
-    {
-        public int Id { get; set; }
-        public required string TestStationName { get; set; }
-        public required string TestCaseID { get; set; }
-        public required string Orchestrator { get; set; }
-        public Guid AppLicenseId { get; set; }
- 
-        [ForeignKey("AppLicenseId")]
-        public required AppLicense AppLicense { get; set; }
-        public DateTime ReservationTime { get; set; }
-        public DateTime EstCompletionTime { get; set; }
-        public DateTime? CompletionTime { get; set; }
-        public required string ReservedByUser { get; set; }
-        public required string Framework { get; set; }
-        
-    }
+namespace Software_Account_Management.Models;
+
+public partial class LicenseOrderBook
+{
+    public Guid LicenseOrderBookId { get; set; }
+
+    public string TestStationName { get; set; } = null!;
+
+    public int TestCaseId { get; set; }
+
+    public string Orchestrator { get; set; } = null!;
+
+    public DateTime ReservationTime { get; set; }
+
+    public DateTime EstCompletionTime { get; set; }
+
+    public DateTime? CompletionTime { get; set; }
+
+    public string ReservedBy { get; set; } = null!;
+
+    public string Framework { get; set; } = null!;
+
+    public Guid LicenseId { get; set; }
+
+    public string TestStationPool { get; set; } = null!;
+
+    public int SpaceId { get; set; }
+
+    public virtual License License { get; set; } = null!;
 }
