@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Software_Account_Management.Models;
 
 public partial class License
@@ -23,7 +20,7 @@ public partial class License
 
     public DateTime LastModified { get; set; }
 
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public DateTime? ExpiredOn { get; set; }
 

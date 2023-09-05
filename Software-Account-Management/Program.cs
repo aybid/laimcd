@@ -1,11 +1,12 @@
-﻿using Software_Account_Management.Data;
-using Software_Account_Management.Controllers;
-
+﻿using Software_Account_Management.Controllers;
+using Software_Account_Management.Data;
+using Software_Account_Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SoftwareLicenseServiceContext>();
+builder.Services.AddScoped<CacheService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,11 +26,8 @@ app.UseCors(x => x
             .AllowAnyHeader());
 
 app.UseAuthorization();
-
-app.MapControllers();
-
 app.MapApplicationEndpoints();
 
-app.MapLicenseEndpoints();
+app.MapControllers();
 
 app.Run();

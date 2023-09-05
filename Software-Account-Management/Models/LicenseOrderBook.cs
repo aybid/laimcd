@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Software_Account_Management.Models;
 
 public partial class LicenseOrderBook
@@ -28,6 +25,6 @@ public partial class LicenseOrderBook
     public string TestStationPool { get; set; } = null!;
 
     public int SpaceId { get; set; }
-
+    
     public virtual License License { get; set; } = null!;
 }

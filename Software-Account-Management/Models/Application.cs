@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Software_Account_Management.Models;
 
 public partial class Application
